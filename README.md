@@ -34,3 +34,5 @@ npm start
 After running the app, add your screenshot here:
 
 ![App Screenshot](./screenshot.png)
+<img width="1728" height="899" alt="image" src="https://github.com/user-attachments/assets/974e60e0-835f-44dd-8f5a-3d60e6b9bb73" />
+

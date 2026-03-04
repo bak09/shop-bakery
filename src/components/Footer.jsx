@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+import React from "react";
+>>>>>>> 344d0ac0badfa255d3ca64c4e4485e42941bb947
 
 export default function Footer() {
   return (

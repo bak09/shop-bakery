@@ -1,0 +1,258 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #fffdf9;
+  color: #1f1f1f;
+}
+
+.container {
+  width: min(1100px, 92%);
+  margin: 0 auto;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  background: rgba(255, 253, 249, 0.9);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #eee3d6;
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+}
+
+.brand__logo { font-size: 22px; }
+.brand__name { letter-spacing: 0.2px; }
+
+.nav { display: flex; gap: 16px; }
+.nav__link {
+  text-decoration: none;
+  color: #1f1f1f;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+.nav__link:hover { background: #f3e7da; }
+
+.main { padding: 26px 0 40px; }
+
+.hero {
+  padding: 26px;
+  border: 1px solid #eee3d6;
+  border-radius: 18px;
+  background: #fff;
+}
+
+.hero__title { margin: 0 0 10px; font-size: 34px; }
+.hero__subtitle { margin: 0 0 16px; color: #5a534a; line-height: 1.5; }
+
+.section { margin-top: 28px; }
+.section__title { margin: 0 0 14px; }
+
+.grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* ✅ 2-column grid for JSX section */
+.grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #eee3d6;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.card__top { display: flex; gap: 12px; }
+.card__icon { font-size: 22px; }
+.card__title { margin: 0; }
+.card__desc { margin: 6px 0 0; color: #5a534a; }
+
+.card__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.price { font-weight: 700; }
+
+.btn {
+  border: 0;
+  background: #1f1f1f;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.btn:hover { opacity: 0.9; }
+.btn--small { padding: 8px 12px; border-radius: 10px; }
+.btn--ghost {
+  background: #f3e7da;
+  color: #1f1f1f;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.input {
+  width: 100%;
+  border: 1px solid #d8cfc3;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  outline: none;
+}
+
+.input:focus {
+  border-color: #c58b57;
+  box-shadow: 0 0 0 3px rgba(197, 139, 87, 0.16);
+}
+
+.footer {
+  border-top: 1px solid #eee3d6;
+  padding: 18px 0;
+  background: #fff;
+}
+
+.footer__inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.muted { margin: 0; color: #5a534a; }
+
+.card--wide {
+  grid-column: 1 / -1;
+}
+
+body[data-theme="dark"] {
+  background: #1f1f1f;
+  color: #f7efe5;
+}
+
+body[data-theme="dark"] .hero,
+body[data-theme="dark"] .card,
+body[data-theme="dark"] .footer,
+body[data-theme="dark"] .header {
+  background: #2a2a2a;
+  border-color: #3a3a3a;
+}
+
+body[data-theme="dark"] .muted,
+body[data-theme="dark"] .card__desc,
+body[data-theme="dark"] .hero__subtitle {
+  color: #d8cfc3;
+}
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr; }
+  .grid--two { grid-template-columns: 1fr; }
+  .hero__title { font-size: 28px; }
+}
+/* ===== JSX LAB COMPONENTS ===== */
+
+.lab-card{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.lab-title{
+  font-weight:600;
+  font-size:18px;
+}
+
+/* Counter */
+
+.counter{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.counter button{
+  background:#1f1f1f;
+  color:white;
+  border:none;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.counter button:hover{
+  opacity:0.85;
+}
+
+/* Input */
+
+.input-box{
+  padding:10px;
+  border:1px solid #eee3d6;
+  border-radius:10px;
+  font-size:14px;
+}
+
+/* Hover Card */
+
+.hover-card{
+  padding:14px;
+  border-radius:12px;
+  border:1px solid #eee3d6;
+  transition:all 0.2s ease;
+}
+
+.hover-card:hover{
+  background:#fdf4ea;
+  transform:translateY(-3px);
+}
+
+/* Theme Toggle */
+
+.theme-dark{
+  background:#1f1f1f;
+  color:white;
+}
+
+.theme-light{
+  background:white;
+  color:#1f1f1f;
+}
+
+/* Button click */
+
+.action-btn{
+  background:#d97706;
+  color:white;
+  border:none;
+  padding:10px 14px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.action-btn:hover{
+  background:#b45309;
+}

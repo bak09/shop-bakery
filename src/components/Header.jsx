@@ -1,60 +1,62 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
-export default function Header({ page, onNavigate, cartCount, onClearCart }) {
-  const goHomeSection = (id) => {
-    onNavigate("home");
-    // дождаться отрисовки Home
-    setTimeout(() => {
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 0);
-  };
-
+export default function Header({ cartCount, onClearCart }) {
   return (
     <header className="header">
       <div className="container header__inner">
-        <div className="brand" role="button" tabIndex={0} onClick={() => onNavigate("home")}>
+        <NavLink to="/" className="brand">
           <span className="brand__logo">🥐</span>
           <span className="brand__name">Shop Bakery</span>
-        </div>
+        </NavLink>
 
         <nav className="nav">
-          <button
-            className={`nav__btn ${page === "home" ? "nav__btn--active" : ""}`}
-            type="button"
-            onClick={() => onNavigate("home")}
+          <NavLink
+            to="/"
+            className={({ isActive }) => `nav__btn ${isActive ? "nav__btn--active" : ""}`}
           >
             Home
-          </button>
+          </NavLink>
 
-          <button
-            className={`nav__btn ${page === "products" ? "nav__btn--active" : ""}`}
-            type="button"
-            onClick={() => onNavigate("products")}
+          <NavLink
+            to="/catalog"
+            className={({ isActive }) => `nav__btn ${isActive ? "nav__btn--active" : ""}`}
           >
-            CRUD Products
-          </button>
+            Catalog
+          </NavLink>
 
-          <button
-            className={`nav__btn ${page === "cart" ? "nav__btn--active" : ""}`}
-            type="button"
-            onClick={() => onNavigate("cart")}
+          <NavLink
+            to="/about"
+            className={({ isActive }) => `nav__btn ${isActive ? "nav__btn--active" : ""}`}
+          >
+            About
+          </NavLink>
+
+          <NavLink
+            to="/contact"
+            className={({ isActive }) => `nav__btn ${isActive ? "nav__btn--active" : ""}`}
+          >
+            Contact
+          </NavLink>
+
+          <NavLink
+            to="/cart"
+            className={({ isActive }) => `nav__btn ${isActive ? "nav__btn--active" : ""}`}
           >
             Cart
-          </button>
+          </NavLink>
         </nav>
 
         <div className="cart">
-          <button
-            className="cart__badge"
-            type="button"
-            onClick={() => onNavigate("cart")}
-          >
+          <NavLink to="/cart" className="cart__badge">
             🛒 {cartCount}
-          </button>
+          </NavLink>
           <button className="nav__btn nav__btn--danger" type="button" onClick={onClearCart}>
             Clear
           </button>
+          <NavLink to="/admin/login" className="nav__btn" style={{ marginLeft: '1rem' }}>
+            Admin
+          </NavLink>
         </div>
       </div>
     </header>

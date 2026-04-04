@@ -107,10 +107,14 @@ export default function MainContent({ products = [], onAddToCart = () => {} }) {
                 return (
                   <article className="card" key={p.id}>
                     <div className="card__top">
-                      <div className="card__icon">🍞</div>
+                      {p.image ? (
+                        <img src={p.image} alt={p.name} style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '4px' }} />
+                      ) : (
+                        <div className="card__icon">🍞</div>
+                      )}
                       <div>
                         <h3 className="card__title">{p.name}</h3>
-                        <p className="card__desc">{p.desc}</p>
+                        <p className="card__desc">{p.description || p.desc}</p>
                         <p className="muted">Категория: {p.category}</p>
                       </div>
                     </div>

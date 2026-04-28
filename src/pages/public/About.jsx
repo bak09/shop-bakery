@@ -5,10 +5,16 @@ export default function About() {
     <main className="main">
       <div className="container">
         <section className="section">
-          <h2 className="section__title">О нас</h2>
+          <h2 className="section__title">About</h2>
           <div className="card">
-            <p>Добро пожаловать в Shop Bakery! Мы предлагаем свежую выпечку и десерты.</p>
-            <p>Наша миссия - радовать вас вкусными продуктами каждый день.</p>
+            <p>
+              Shop Bakery is a React single-page application built as a semester
+              project and upgraded for the final defense.
+            </p>
+            <p>
+              Its focus is clean architecture: reusable components, protected
+              routes, custom hooks, and local persistence.
+            </p>
           </div>
         </section>
       </div>

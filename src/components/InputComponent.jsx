@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function InputComponent() {
+const InputComponent = () => {
   const [text, setText] = useState("");
 
   return (
@@ -20,4 +20,6 @@ export default function InputComponent() {
       </p>
     </div>
   );
-}
+};
+
+export default React.memo(InputComponent);

@@ -5,10 +5,10 @@ export default function Contact() {
     <main className="main">
       <div className="container">
         <section className="section">
-          <h2 className="section__title">Контакты</h2>
+          <h2 className="section__title">Contact</h2>
           <div className="card">
-            <p>Адрес: ул. Пекарская, 1</p>
-            <p>Телефон: +7 (123) 456-78-90</p>
+            <p>Address: Bakery Street 1, Almaty</p>
+            <p>Phone: +7 (123) 456-78-90</p>
             <p>Email: info@shopbakery.com</p>
           </div>
         </section>

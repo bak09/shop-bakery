@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { adminCredentials } from "../data/mockData";
 
 const AuthContext = createContext();
 
@@ -9,31 +10,36 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const storedAuth = localStorage.getItem('isAuthenticated');
-    const storedUser = localStorage.getItem('user');
-    if (storedAuth === 'true' && storedUser) {
+    const storedAuth = localStorage.getItem("isAuthenticated");
+    const storedUser = localStorage.getItem("user");
+
+    if (storedAuth === "true" && storedUser) {
       setIsAuthenticated(true);
       setUser(JSON.parse(storedUser));
     }
   }, []);
 
   const login = (email, password) => {
-    if (email === 'admin@bakery.com' && password === 'admin123') {
-      const adminUser = { email, role: 'admin' };
+    if (
+      email === adminCredentials.email &&
+      password === adminCredentials.password
+    ) {
+      const adminUser = { email, role: "admin" };
       setIsAuthenticated(true);
       setUser(adminUser);
-      localStorage.setItem('isAuthenticated', 'true');
-      localStorage.setItem('user', JSON.stringify(adminUser));
+      localStorage.setItem("isAuthenticated", "true");
+      localStorage.setItem("user", JSON.stringify(adminUser));
       return true;
     }
+
     return false;
   };
 
   const logout = () => {
     setIsAuthenticated(false);
     setUser(null);
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('user');
+    localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("user");
   };
 
   return (

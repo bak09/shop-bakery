@@ -1,15 +1,31 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { useShop } from "../../context/ShopContext";
 
-export default function Cart({ cart, total, finalTotal, removeFromCart }) {
+export default function Cart() {
+  const { cart, totals, removeFromCart, clearCart } = useShop();
+
   return (
     <main className="main">
       <div className="container">
         <section className="section">
-          <h2 className="section__title">Корзина</h2>
+          <div className="section__header">
+            <h2 className="section__title">Cart</h2>
+            {cart.length > 0 ? (
+              <button className="btn btn--small btn--danger" onClick={clearCart}>
+                Clear cart
+              </button>
+            ) : null}
+          </div>
 
           <div className="card">
             {cart.length === 0 ? (
-              <p className="muted">Корзина пуста</p>
+              <div>
+                <p className="muted">Your cart is empty.</p>
+                <Link className="btn btn--small" to="/catalog">
+                  Continue shopping
+                </Link>
+              </div>
             ) : (
               <div className="cart-list">
                 {cart.map((item) => (
@@ -19,21 +35,17 @@ export default function Cart({ cart, total, finalTotal, removeFromCart }) {
                         {item.name} x {item.qty}
                       </p>
                       <p className="muted">
-                        {item.price} ₸ × {item.qty} = {item.price * item.qty} ₸
+                        {item.price} KZT x {item.qty} = {item.price * item.qty} KZT
                       </p>
-                      {item.note && (
-                        <p className="muted">Примечание: {item.note}</p>
-                      )}
-                      {item.coupon && (
-                        <p className="muted">Купон: {item.coupon}</p>
-                      )}
+                      {item.note ? <p className="muted">Note: {item.note}</p> : null}
+                      {item.coupon ? <p className="muted">Coupon: {item.coupon}</p> : null}
                     </div>
 
                     <button
                       className="btn btn--small btn--danger"
                       onClick={() => removeFromCart(item.id)}
                     >
-                      Удалить
+                      Remove
                     </button>
                   </div>
                 ))}
@@ -41,12 +53,11 @@ export default function Cart({ cart, total, finalTotal, removeFromCart }) {
             )}
 
             <hr />
-
             <p>
-              <strong>Итого:</strong> {total} ₸
+              <strong>Subtotal:</strong> {totals.subtotal} KZT
             </p>
             <p>
-              <strong>Итоговый результат:</strong> {finalTotal} ₸
+              <strong>Final total:</strong> {totals.finalTotal} KZT
             </p>
           </div>
         </section>

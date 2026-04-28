@@ -1,81 +1,167 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useShop } from "../../context/ShopContext";
 
-const ProductsAdmin = ({ products, onAddProduct, onDeleteProduct }) => {
-  const [form, setForm] = useState({ name: '', price: '', category: '', description: '', image: '', imageFile: null });
+const ProductsAdmin = () => {
+  const { products, loading, error, addProduct, removeProduct, restoreProducts } =
+    useShop();
+  const [form, setForm] = useState({
+    name: "",
+    price: "",
+    category: "",
+    description: "",
+    image: "",
+    imageFile: null,
+  });
+  const [formError, setFormError] = useState("");
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setForm(prev => ({ ...prev, image: e.target.result, imageFile: file }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
 
-  const handleAdd = () => {
-    if (!form.name || !form.price || !form.description) {
-      alert('Fill all fields');
+    if (!file) {
       return;
     }
-    
-    let imageUrl = form.image;
-    if (!imageUrl) {
-      // Auto-generate if no image provided
-      const imageQuery = encodeURIComponent(`${form.name} bakery dessert food`);
-      imageUrl = `https://source.unsplash.com/featured/?${imageQuery}`;
+
+    const reader = new FileReader();
+    reader.onload = (loadEvent) => {
+      setForm((prev) => ({
+        ...prev,
+        image: loadEvent.target.result,
+        imageFile: file,
+      }));
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleAdd = async () => {
+    if (!form.name || !form.price || !form.category || !form.description) {
+      setFormError("Complete all required fields before creating a product.");
+      return;
     }
-    
-    onAddProduct({
-      name: form.name,
-      price: Number(form.price),
-      category: form.category,
-      description: form.description,
-      image: imageUrl
-    });
-    setForm({ name: '', price: '', category: '', description: '', image: '', imageFile: null });
+
+    const imageUrl =
+      form.image ||
+      `https://source.unsplash.com/featured/?${encodeURIComponent(
+        `${form.name} bakery dessert food`
+      )}`;
+
+    try {
+      await addProduct({
+        name: form.name.trim(),
+        price: Number(form.price),
+        category: form.category.trim(),
+        description: form.description.trim(),
+        image: imageUrl,
+      });
+      setFormError("");
+      setForm({
+        name: "",
+        price: "",
+        category: "",
+        description: "",
+        image: "",
+        imageFile: null,
+      });
+    } catch (error) {
+      setFormError(error.message || "Failed to create product.");
+    }
   };
 
   return (
     <div className="container">
-      <h2>Manage Products</h2>
-      <div className="card" style={{ marginBottom: '2rem' }}>
-        <h3>Add New Product</h3>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '400px' }}>
-          <input placeholder="Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-          <input placeholder="Price" type="number" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} />
-          <input placeholder="Category" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} />
-          <textarea placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows="3" />
+      <div className="section__header">
+        <h2 className="section__title">Manage Products</h2>
+        <button className="btn btn--ghost btn--small" onClick={restoreProducts}>
+          Reset starter data
+        </button>
+      </div>
+
+      {error ? <div className="status status--error">{error}</div> : null}
+
+      <div className="card" style={{ marginBottom: "2rem" }}>
+        <h3 className="card__title">Add New Product</h3>
+        <div className="admin-form">
+          <input
+            className="input"
+            placeholder="Name"
+            value={form.name}
+            onChange={(event) => setForm({ ...form, name: event.target.value })}
+          />
+          <input
+            className="input"
+            placeholder="Price"
+            type="number"
+            value={form.price}
+            onChange={(event) => setForm({ ...form, price: event.target.value })}
+          />
+          <input
+            className="input"
+            placeholder="Category"
+            value={form.category}
+            onChange={(event) => setForm({ ...form, category: event.target.value })}
+          />
+          <textarea
+            className="input"
+            placeholder="Description"
+            rows="3"
+            value={form.description}
+            onChange={(event) =>
+              setForm({ ...form, description: event.target.value })
+            }
+          />
+
           <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem' }}>Product Image:</label>
-            <input 
-              type="file" 
-              accept="image/*" 
-              onChange={handleImageChange} 
-              style={{ marginBottom: '0.5rem' }}
-            />
-            {form.image && (
+            <label style={{ display: "block", marginBottom: "0.5rem" }}>
+              Product image
+            </label>
+            <input type="file" accept="image/*" onChange={handleImageChange} />
+            {form.image ? (
               <div>
-                <img src={form.image} alt="Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '4px' }} />
+                <img
+                  src={form.image}
+                  alt="Preview"
+                  className="product-media product-media--preview"
+                />
               </div>
-            )}
-            <small style={{ color: '#666' }}>Upload image or leave empty for auto-generation</small>
+            ) : null}
+            <small className="muted">
+              Upload an image or leave it empty to use a placeholder photo.
+            </small>
           </div>
-          <button className="btn" onClick={handleAdd}>Add Product</button>
+
+          {formError ? <p className="form-error">{formError}</p> : null}
+          <button className="btn" onClick={handleAdd}>
+            Add product
+          </button>
         </div>
       </div>
+
       <div>
-        <h3>Current Products</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '1rem' }}>
-          {products.map(p => (
-            <div key={p.id} className="card">
-              <img src={p.image} alt={p.name} style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px' }} />
-              <h4>{p.name}</h4>
-              <p>{p.description}</p>
-              <p><strong>Price:</strong> {p.price} ₸</p>
-              <button className="btn btn--danger" onClick={() => onDeleteProduct(p.id)}>Delete</button>
-            </div>
+        <h3 className="section__title">Current Products</h3>
+        {loading ? (
+          <div className="card">
+            <p className="muted">Refreshing products...</p>
+          </div>
+        ) : null}
+        <div className="grid">
+          {products.map((product) => (
+            <article key={product.id} className="card">
+              <img
+                src={product.image}
+                alt={product.name}
+                className="product-media"
+              />
+              <h4>{product.name}</h4>
+              <p>{product.description}</p>
+              <p>
+                <strong>Price:</strong> {product.price} KZT
+              </p>
+              <button
+                className="btn btn--danger"
+                onClick={() => removeProduct(product.id)}
+              >
+                Delete
+              </button>
+            </article>
           ))}
         </div>
       </div>

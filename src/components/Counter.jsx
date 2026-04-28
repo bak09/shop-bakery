@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 
-export default function Counter() {
+const Counter = () => {
   const [count, setCount] = useState(1);
 
   return (
@@ -23,4 +23,6 @@ export default function Counter() {
       </div>
     </div>
   );
-}
+};
+
+export default React.memo(Counter);

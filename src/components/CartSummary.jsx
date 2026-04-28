@@ -1,13 +1,13 @@
 import React from "react";
 
-export default function CartSummary({
+const CartSummary = ({
   cart,
   coupon,
   onApplyCoupon,
   note,
   total,
   discountedTotal,
-}) {
+}) => {
   return (
     <section className="section">
       <h2 className="section__title">Cart Summary</h2>
@@ -43,4 +43,6 @@ export default function CartSummary({
       </div>
     </section>
   );
-}
+};
+
+export default React.memo(CartSummary);

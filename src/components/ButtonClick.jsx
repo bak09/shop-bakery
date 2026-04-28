@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function ButtonClick() {
+const ButtonClick = () => {
   const [message, setMessage] = useState("");
 
   return (
@@ -23,4 +23,6 @@ export default function ButtonClick() {
       )}
     </div>
   );
-}
+};
+
+export default React.memo(ButtonClick);

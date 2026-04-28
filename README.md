@@ -1,139 +1,40 @@
-# Shop Bakery - React E-commerce Application
+# Shop Bakery
 
-A modern, full-featured bakery e-commerce application built with React, featuring admin panel, product management, and beautiful UI.
+Shop Bakery is a React SPA that was upgraded from a semester project into an endterm-ready application. It includes protected admin routes, product CRUD, product detail pages, local persistence, reusable hooks, and a mock API layer with visible loading and error states.
 
-## Features
+## Demo Credentials
 
-### 🛒 Public Features
-- **Product Catalog**: Browse bakery products with beautiful images
-- **Product Details**: Detailed view of each product
-- **Shopping Cart**: Add/remove items, calculate totals
-- **Responsive Design**: Works on all devices
-- **Image Gallery**: High-quality product photos
+- Admin route: `/admin/login`
+- Email: `admin@bakery.com`
+- Password: `admin123`
 
-### 🔐 Admin Panel
-- **Authentication**: Secure login system
-- **Product Management**: Add, edit, delete products
-- **Image Upload**: Upload custom product images from local device
-- **Dashboard**: Admin overview and navigation
-- **Order Management**: Future orders tracking
+## Core Features
 
-### 🛠️ Technical Features
-- **React Router**: Client-side routing with protected routes
-- **Context API**: State management for auth and data
-- **Local Storage**: Persistent data storage
-- **File Upload**: Image handling with base64 conversion
-- **Responsive CSS**: Modern, clean design
+- Public catalog with search, category filtering, sorting, and dynamic product detail routes
+- Protected admin area with login, dashboard, and product management
+- Product create and delete operations backed by a service layer
+- Cart persistence with subtotal and discount calculation
+- Theme persistence and authentication persistence with localStorage
+- Simulated API failure mode for defense-ready error handling
 
-## Screenshots
+## Architecture
 
-### Home Page
-![Home Page](screenshots/home.png)
-*Main landing page with featured products*
+- `context/AuthContext.jsx`: login state and protected-route auth
+- `context/ShopContext.jsx`: shared shop data, cart, filters, CRUD actions, and toast feedback
+- `hooks/useLocalStorage.js`: reusable persistence hook
+- `hooks/useProducts.js`: product loading logic with cleanup using `AbortController`
+- `hooks/useProductFilters.js`: memoized search, filter, and sort logic
+- `services/productService.js`: mock API abstraction and localStorage-backed product storage
 
-### Product Catalog
-![Product Catalog](screenshots/catalog.png)
-*Grid view of all available bakery products*
+## Defense Talking Points
 
-### Product Details
-![Product Details](screenshots/product-details.png)
-*Detailed product view with add to cart functionality*
+- State management uses Context because the app is medium-sized and shares auth, cart, filters, and product CRUD across unrelated routes.
+- `useProducts` is the best hook to explain during defense because it handles async data loading, cleanup, and reusable CRUD actions.
+- The `useEffect` inside `useProducts` uses an `AbortController` cleanup so stale async work does not update state after unmount.
+- Error handling can be demonstrated live from the admin dashboard by enabling the simulated API failure mode.
 
-### Admin Login
-![Admin Login](screenshots/admin-login.png)
-*Secure admin authentication page*
+## Scripts
 
-### Admin Dashboard
-![Admin Dashboard](screenshots/admin-dashboard.png)
-*Admin control panel overview*
-
-### Product Management
-![Product Management](screenshots/admin-products.png)
-*Add, edit, and manage bakery products*
-
-## Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/bak09/shop-bakery.git
-cd shop-bakery
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Start the development server:
-```bash
-npm start
-```
-
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
-
-## Admin Access
-
-- **URL**: `/admin/login`
-- **Email**: `admin@bakery.com`
-- **Password**: `admin123`
-
-## Project Structure
-
-```
-src/
-├── components/          # Reusable UI components
-├── context/            # React Context for state management
-├── data/               # Mock data and constants
-├── layouts/            # Layout components for public/admin
-├── pages/              # Page components
-│   ├── public/         # Public user pages
-│   └── admin/          # Admin-only pages
-├── routes/             # Route protection logic
-└── styles.css          # Global styles
-```
-
-## Technologies Used
-
-- **React** - Frontend framework
-- **React Router** - Client-side routing
-- **Context API** - State management
-- **Local Storage** - Data persistence
-- **CSS** - Styling
-- **Unsplash API** - Auto-generated images
-
-## Features in Detail
-
-### Product Management
-- Add products with custom images or auto-generated ones
-- Edit product details (name, price, category, description)
-- Delete products from catalog
-- Images stored as base64 for offline functionality
-
-### Shopping Experience
-- Browse products in responsive grid
-- View detailed product information
-- Add items to cart with quantity control
-- Persistent cart across sessions
-
-### Admin Security
-- Protected routes requiring authentication
-- Automatic redirect to login for unauthorized access
-- Secure logout functionality
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add screenshots of new features
-5. Commit and push
-6. Create a pull request
-
-## License
-
-This project is licensed under the MIT License.
-
----
-
-Built with ❤️ for bakery lovers everywhere!
-
+- `npm start`
+- `npm test`
+- `npm run build`

@@ -1,13 +1,13 @@
 import React from "react";
 
-export default function SearchFilterPanel({
+const SearchFilterPanel = ({
   search,
   onSearchChange,
   category,
   onCategoryChange,
   sortOrder,
   onSortChange,
-}) {
+}) => {
   return (
     <section className="section">
       <h2 className="section__title">Search & Filter</h2>
@@ -45,4 +45,6 @@ export default function SearchFilterPanel({
       </div>
     </section>
   );
-}
+};
+
+export default React.memo(SearchFilterPanel);

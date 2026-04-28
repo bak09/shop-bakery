@@ -1,7 +1,7 @@
 import React from "react";
 
-export default function HoverCard(){
-  return(
+const HoverCard = () => {
+  return (
     <div className="lab-card">
       <div className="lab-title">Baker Tip</div>
 
@@ -10,4 +10,6 @@ export default function HoverCard(){
       </div>
     </div>
   );
-}
+};
+
+export default React.memo(HoverCard);

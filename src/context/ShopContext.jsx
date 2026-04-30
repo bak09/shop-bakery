@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
+import useOrders from "../hooks/useOrders";
 import useProductFilters from "../hooks/useProductFilters";
 import useProducts from "../hooks/useProducts";
 
@@ -21,10 +22,13 @@ export function ShopProvider({ children }) {
     loading,
     error,
     createProduct,
+    updateProduct,
     deleteProduct,
     resetProducts,
     refreshProducts,
   } = useProducts();
+  const { orders, loadingOrders, ordersError, createOrder, changeOrderStatus } =
+    useOrders();
   const [cart, setCart] = useLocalStorage("bakery-cart", []);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
@@ -81,6 +85,9 @@ export function ShopProvider({ children }) {
       cartCount,
       totals,
       toast,
+      orders,
+      loadingOrders,
+      ordersError,
       addToCart({ product, qty = 1, note = "", coupon = "" }) {
         setCart((prevCart) => {
           const existingItem = prevCart.find((item) => item.id === product.id);
@@ -125,6 +132,10 @@ export function ShopProvider({ children }) {
         await createProduct(product);
         setToast("Product created successfully");
       },
+      async editProduct(productId, updates) {
+        await updateProduct(productId, updates);
+        setToast("Product updated successfully");
+      },
       async removeProduct(productId) {
         await deleteProduct(productId);
         setToast("Product deleted successfully");
@@ -132,6 +143,21 @@ export function ShopProvider({ children }) {
       async restoreProducts() {
         await resetProducts();
         setToast("Catalog restored to starter data");
+      },
+      async checkout(customerData) {
+        await createOrder({
+          ...customerData,
+          items: cart,
+          subtotal: totals.subtotal,
+          discountRate: totals.discountRate,
+          finalTotal: totals.finalTotal,
+        });
+        setCart([]);
+        setToast("Order placed successfully");
+      },
+      async updateOrderStatus(orderId, status) {
+        await changeOrderStatus(orderId, status);
+        setToast(`Order status changed to ${status}`);
       },
       refreshProducts,
     }),
@@ -148,10 +174,16 @@ export function ShopProvider({ children }) {
       cartCount,
       totals,
       toast,
+      orders,
+      loadingOrders,
+      ordersError,
       setCart,
       createProduct,
+      updateProduct,
       deleteProduct,
       resetProducts,
+      createOrder,
+      changeOrderStatus,
       refreshProducts,
     ]
   );

@@ -28,7 +28,7 @@ const AdminLayout = () => {
               Products
             </NavLink>
             <NavLink to="/admin/orders" className="nav__btn">
-              Defense Notes
+              Orders
             </NavLink>
           </nav>
           <Outlet />

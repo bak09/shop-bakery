@@ -4,7 +4,7 @@ import { useShop } from "../../context/ShopContext";
 import { productService } from "../../services/productService";
 
 const Dashboard = () => {
-  const { products, cart, refreshProducts } = useShop();
+  const { products, cart, orders, refreshProducts } = useShop();
   const apiFailureEnabled = productService.getApiFailure();
 
   const handleToggleFailure = async () => {
@@ -27,6 +27,9 @@ const Dashboard = () => {
           </p>
           <p>
             <strong>Items in cart:</strong> {cart.length}
+          </p>
+          <p>
+            <strong>Orders saved:</strong> {orders.length}
           </p>
         </div>
 
@@ -56,7 +59,7 @@ const Dashboard = () => {
             Manage Products
           </NavLink>
           <NavLink to="/admin/orders" className="btn btn--ghost">
-            View defense notes
+            View orders
           </NavLink>
         </div>
       </div>

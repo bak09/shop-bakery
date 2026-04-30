@@ -57,8 +57,18 @@ export default function Cart() {
               <strong>Subtotal:</strong> {totals.subtotal} KZT
             </p>
             <p>
+              <strong>Discount:</strong> {Math.round(totals.discountRate * 100)}%
+            </p>
+            <p>
               <strong>Final total:</strong> {totals.finalTotal} KZT
             </p>
+            {cart.length > 0 ? (
+              <div className="actions">
+                <Link className="btn" to="/checkout">
+                  Proceed to checkout
+                </Link>
+              </div>
+            ) : null}
           </div>
         </section>
       </div>

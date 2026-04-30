@@ -2,9 +2,17 @@ import React, { useState } from "react";
 import { useShop } from "../../context/ShopContext";
 
 const ProductsAdmin = () => {
-  const { products, loading, error, addProduct, removeProduct, restoreProducts } =
-    useShop();
+  const {
+    products,
+    loading,
+    error,
+    addProduct,
+    editProduct,
+    removeProduct,
+    restoreProducts,
+  } = useShop();
   const [form, setForm] = useState({
+    id: null,
     name: "",
     price: "",
     category: "",
@@ -13,6 +21,18 @@ const ProductsAdmin = () => {
     imageFile: null,
   });
   const [formError, setFormError] = useState("");
+
+  const resetForm = () => {
+    setForm({
+      id: null,
+      name: "",
+      price: "",
+      category: "",
+      description: "",
+      image: "",
+      imageFile: null,
+    });
+  };
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -32,9 +52,9 @@ const ProductsAdmin = () => {
     reader.readAsDataURL(file);
   };
 
-  const handleAdd = async () => {
+  const handleSave = async () => {
     if (!form.name || !form.price || !form.category || !form.description) {
-      setFormError("Complete all required fields before creating a product.");
+      setFormError("Complete all required fields before saving a product.");
       return;
     }
 
@@ -45,25 +65,38 @@ const ProductsAdmin = () => {
       )}`;
 
     try {
-      await addProduct({
+      const payload = {
         name: form.name.trim(),
         price: Number(form.price),
         category: form.category.trim(),
         description: form.description.trim(),
         image: imageUrl,
-      });
+      };
+
+      if (form.id) {
+        await editProduct(form.id, payload);
+      } else {
+        await addProduct(payload);
+      }
+
       setFormError("");
-      setForm({
-        name: "",
-        price: "",
-        category: "",
-        description: "",
-        image: "",
-        imageFile: null,
-      });
+      resetForm();
     } catch (error) {
-      setFormError(error.message || "Failed to create product.");
+      setFormError(error.message || "Failed to save product.");
     }
+  };
+
+  const handleEdit = (product) => {
+    setForm({
+      id: product.id,
+      name: product.name,
+      price: String(product.price),
+      category: product.category,
+      description: product.description,
+      image: product.image,
+      imageFile: null,
+    });
+    setFormError("");
   };
 
   return (
@@ -78,7 +111,9 @@ const ProductsAdmin = () => {
       {error ? <div className="status status--error">{error}</div> : null}
 
       <div className="card" style={{ marginBottom: "2rem" }}>
-        <h3 className="card__title">Add New Product</h3>
+        <h3 className="card__title">
+          {form.id ? "Edit Product" : "Add New Product"}
+        </h3>
         <div className="admin-form">
           <input
             className="input"
@@ -129,9 +164,16 @@ const ProductsAdmin = () => {
           </div>
 
           {formError ? <p className="form-error">{formError}</p> : null}
-          <button className="btn" onClick={handleAdd}>
-            Add product
-          </button>
+          <div className="actions">
+            <button className="btn" onClick={handleSave}>
+              {form.id ? "Update product" : "Add product"}
+            </button>
+            {form.id ? (
+              <button className="btn btn--ghost" onClick={resetForm}>
+                Cancel edit
+              </button>
+            ) : null}
+          </div>
         </div>
       </div>
 
@@ -155,12 +197,17 @@ const ProductsAdmin = () => {
               <p>
                 <strong>Price:</strong> {product.price} KZT
               </p>
-              <button
-                className="btn btn--danger"
-                onClick={() => removeProduct(product.id)}
-              >
-                Delete
-              </button>
+              <div className="actions">
+                <button className="btn btn--ghost" onClick={() => handleEdit(product)}>
+                  Edit
+                </button>
+                <button
+                  className="btn btn--danger"
+                  onClick={() => removeProduct(product.id)}
+                >
+                  Delete
+                </button>
+              </div>
             </article>
           ))}
         </div>

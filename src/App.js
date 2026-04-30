@@ -11,6 +11,7 @@ import ProductDetails from "./pages/public/ProductDetails";
 import About from "./pages/public/About";
 import Contact from "./pages/public/Contact";
 import Cart from "./pages/public/Cart";
+import Checkout from "./pages/public/Checkout";
 import Login from "./pages/admin/Login";
 import Dashboard from "./pages/admin/Dashboard";
 import ProductsAdmin from "./pages/admin/ProductsAdmin";
@@ -30,6 +31,7 @@ export default function App() {
             <Route path="about" element={<About />} />
             <Route path="contact" element={<Contact />} />
             <Route path="cart" element={<Cart />} />
+            <Route path="checkout" element={<Checkout />} />
           </Route>
 
           <Route path="/admin/login" element={<Login />} />

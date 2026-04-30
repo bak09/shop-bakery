@@ -386,6 +386,12 @@ body {
   max-width: 400px;
 }
 
+.order-items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
 .form-error {
   color: #b3261e;
   margin: 4px 0 0;

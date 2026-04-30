@@ -40,6 +40,13 @@ export default function useProducts() {
     return updatedProducts;
   }, []);
 
+  const updateProduct = useCallback(async (productId, updates) => {
+    setError("");
+    const updatedProducts = await productService.updateProduct(productId, updates);
+    setProducts(updatedProducts);
+    return updatedProducts;
+  }, []);
+
   const deleteProduct = useCallback(async (productId) => {
     setError("");
     const updatedProducts = await productService.deleteProduct(productId);
@@ -64,6 +71,7 @@ export default function useProducts() {
     loading,
     error,
     createProduct,
+    updateProduct,
     deleteProduct,
     resetProducts,
     refreshProducts,
